@@ -1,0 +1,17 @@
+[
+{
+    "title":"titulo1",
+    "price":5000,
+    "thumbnail":"url1"
+}.
+{
+    "title":"titulo2",
+    "price":10000,
+    "thumbnail":"url2"
+},
+{
+    "title":"titulo3",
+    "price":15000,
+    "thumbnail":"url3"
+}
+]
