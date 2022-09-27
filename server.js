@@ -38,15 +38,11 @@ const getProduct = async () => {
     return listProduct
 }
 
-const getProductRandom = async () =>{
-    let length = await productos.getLength()
-    let random = Math.floor(Math.random() * length)
-    let productRandom = await productos.getAll();
-    console.log(length, random, productRandom)
-    return JSON.stringify(productRandom[random]);
+const getProductRandom = async (min,max)=>{
+    let id = Math.floor(Math.random()*(max-min)+min)
+    let productoRandom = JSON.stringify(await Contenedor.getById(id));
+    return productoRandom
 }
-
-
 app.get('/', (req, res) => {
     res.send(`Root!!!!!`);
 })
