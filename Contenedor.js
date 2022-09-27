@@ -9,9 +9,6 @@ class Contenedor {
     async save(producto){
         let contenido = await fs.promises.readFile (this.file)
         let contObj = JSON.parse(contenido)
-        let newId
-        newId = contObj.length > 0 ? contObj.length + 1 : 1;
-        producto.id = newId;
         contObj.push(producto)
         await fs.promises.writeFile(this.file, JSON.stringify(contObj))
     }

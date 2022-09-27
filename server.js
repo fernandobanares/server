@@ -59,10 +59,6 @@ app.get('/productoRandom',async (req, res) => {
     res.send(`Lista de productos: ${await getProductRandom()}`)
 })
 
-app.get('/fyh',(req, res) => {
-    res.send({fyh: new Date().toLocaleString()})
-})
-
 const PORT = process.env.PORT || 8080
 
 const server = app.listen(PORT, () => {
