@@ -1,63 +1,40 @@
+const express = require('express');
+const ApiClass = require ('./public/js/ApiClass.js');
+const app = express();
+const {Router} = express;
+const routerApiProductos = Router();
 
-const express = require('express')
-const app = express ()
-const Contenedor = require('./Contenedor')
+app.use('/api/productos',routerApiProductos);
 
-const productos = new Contenedor ('productos.txt')
+routerApiProductos.use(express.json());
+routerApiProductos.use(express.urlencoded({extended: true}));
 
-// productos
+app.use(express.static('public'));
 
-let producto1 ={
-    "title":"titulo1",
-    "price":5000,
-    "thumbnail":"url1"
-}
-let producto2 ={
-    "title":"titulo1",
-    "price":10000,
-    "thumbnail":"url2"
-}
-let producto3 ={
-    "title":"titulo1",
-    "price":15000,
-    "thumbnail":"url3"
-}
+const productos = [];
 
-// envío de productos a txt
+let api = new ApiClass(productos);
 
-const usarContenedor = async () => {
-    await productos.save (producto1)
-    await productos.save (producto2)
-    await productos.save (producto3)
-}
-
-usarContenedor()
-
-const getProduct = async () => {
-    let listProduct = JSON.stringify(await productos.getAll())
-    return listProduct
-}
-
-const getProductRandom = async (min,max)=>{
-    let id = Math.floor(Math.random()*(max-min)+min)
-    let productoRandom = JSON.stringify(await Contenedor.getById(id));
-    return productoRandom
-}
-app.get('/', (req, res) => {
-    res.send(`Root!!!!!`);
+routerApiProductos.get('', (req,res)=>{
+    res.send({productos: productos});
 })
 
-app.get('/productos',async (req, res) => {
-    res.send(`Lista de productos: ${await getProduct()}`)
+routerApiProductos.post('', (req,res)=>{
+    api.addProduct(req,res);
 })
 
-app.get('/productoRandom',async (req, res) => {
-    res.send(`Lista de productos: ${await getProductRandom()}`)
+routerApiProductos.get('/:id', (req,res)=>{
+    api.getProduct(req,res);
 })
 
-const PORT = process.env.PORT || 8080
-
-const server = app.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
+routerApiProductos.put('/:id',(req,res)=>{
+    api.modifyProduct(req,res);
 })
-server.on("error", error => console.log(`Error en servidor ${error}`))
+
+routerApiProductos.delete('/:id',(req,res)=>{
+    api.deleteProduct(req,res);
+})
+
+const PORT = process.env.port || 8080;
+const server = app.listen(PORT,()=>{console.log('server runing')});
+server.on('error',error=>console.log(`Error ${error}`));
